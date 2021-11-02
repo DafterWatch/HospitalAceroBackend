@@ -73,6 +73,27 @@ router.put('/updateUsuario/:id',(req, res)=>{
         }
     })
 });
+//get doctores
+router.get('/getDoctores',(req, res)=>{
+    let sql = 'select * from doctores'
+    conexion.query(sql, (err, rows, fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows);
+        }
+    });
+});
+//get 1 doctor
+router.get('/getDoctores/:id',(req, res)=>{
+    const {id} = req.params
+    let sql = 'select * from doctores where id = ?'
+    conexion.query(sql,[id], (err, rows, fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows[0]);
+        }
+    });
+});
 //--------------------
 
 module.exports = router;
