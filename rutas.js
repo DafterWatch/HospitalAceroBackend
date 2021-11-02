@@ -128,6 +128,22 @@ router.get('/getAreasName/:areaName',(req, res)=>{
         }
     });
 });
+//get citas
+router.get('/getCitas/:id',(req, res)=>{
+    const {id} = req.params
+    let sql = `
+    select u.idusuarios, u.nombreusuario, c.fecha, c.estado from 
+    (citasMedicas c inner join doctores d on c.doctorId = d.id)
+    inner join usuarios u on c.pacienteId = u.idusuarios
+    where d.id = ?
+    order by fecha asc`
+    conexion.query(sql,[id], (err, rows, fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows);
+        }
+    });
+});
 //agregar citas
 router.post('/addCita',(req, res)=>{
     const {fecha, doctorId, pacienteId, estado} = req.body
