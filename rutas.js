@@ -22,6 +22,18 @@ router.get('/getUsuarios/:id',(req, res)=>{
         }
     });
 });
+//get usuarios con contra y pass
+router.get('/getUsuariosLogin/',(req, res)=>{
+    const {correousuario, contrausuario} = req.body
+    console.log(correousuario, contrausuario);
+    let sql = 'select * from usuarios where correousuario=? AND contrausuario=?'
+    conexion.query(sql,[correousuario,contrausuario], (err, rows, fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows[0]);
+        }
+    });
+});
 //agregar usuarios
 router.post('/addUsuario',(req, res)=>{
     const {nombreusuario, correousuario, contrausuario, categoria} = req.body
