@@ -156,6 +156,37 @@ router.post('/addCita',(req, res)=>{
         }
     })
 });
+//get registro
+router.get('/getRegistro/:id',(req, res)=>{
+    const {id} = req.params
+    let sql = `
+    select r.id as idRegistro, d.id as idDoctor, u.idusuarios, d.doctorName, u.nombreusuario, r.fechaConsulta, r.datosConsulta, r.instruccionesDoctor, r.recetaMedica from 
+(registroPaciente r inner join doctores d on r.doctorId = d.id)
+inner join usuarios u on r.pacienteId = u.idusuarios
+where u.idusuarios = ?`
+    conexion.query(sql,[id], (err, rows, fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows[0]);
+        }
+    });
+});
+//modificar registro
+router.put('/modificarRegistro',(req, res)=>{
+    const {idRegistro,idusuarios,fechaConsulta, datosConsulta, instruccionesDoctor, recetaMedica} = req.body    
+    let sql = `update registroPaciente 
+            set fechaConsulta='${fechaConsulta}', 
+            datosConsulta = '${datosConsulta}', 
+            instruccionesDoctor = '${instruccionesDoctor}', 
+            recetaMedica = '${recetaMedica}'
+            where id = '${idRegistro}' and pacienteId = '${idusuarios}'`
+    conexion.query(sql, (err, rows, fields)=>{
+        if(err) throw err
+        else {
+            res.json({status: 'equipo modificado'});
+        }
+    })
+});
 //--------------------
 
 module.exports = router;
