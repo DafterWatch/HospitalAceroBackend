@@ -144,11 +144,25 @@ router.get('/getCitas/:id',(req, res)=>{
         }
     });
 });
+//get citas paciente
+router.get('/getCitasPaciente/:id',(req, res)=>{
+    const {id} = req.params
+    let sql = `
+    select c.id, d.doctorDetails, d.doctorName, c.fecha, c.hora, c.estado from 
+    citasMedicas c inner join doctores d on c.doctorId = d.id
+    where c.pacienteId = ?;`
+    conexion.query(sql,[id], (err, rows, fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows);
+        }
+    });
+});
 //agregar citas
 router.post('/addCita',(req, res)=>{
-    const {fecha, doctorId, pacienteId, estado} = req.body
-    let sql = `insert into citasMedicas(fecha, doctorId, pacienteId, estado)
-                values('${fecha}',${doctorId},${pacienteId},${estado})`
+    const {fecha, hora, doctorId, pacienteId, estado} = req.body
+    let sql = `insert into citasMedicas(fecha, hora, doctorId, pacienteId, estado)
+                values('${fecha}','${hora}',${doctorId},${pacienteId},${estado})`
     conexion.query(sql, (err, rows, fields)=>{
         if(err) throw err
         else {
