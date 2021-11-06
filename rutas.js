@@ -201,6 +201,18 @@ router.put('/modificarRegistro',(req, res)=>{
         }
     })
 });
+//agregar registroMedico
+router.post('/addRegistroMedico',(req, res)=>{
+    const {doctorId, pacienteId, fechaConsulta, datosConsulta, instruccionesDoctor, recetaMedica} = req.body
+    let sql = `insert into registroPaciente(doctorId, pacienteId, fechaConsulta, datosConsulta, instruccionesDoctor, recetaMedica)
+                values('${doctorId}','${pacienteId}','${fechaConsulta}','${datosConsulta}','${instruccionesDoctor}','${recetaMedica}')`
+    conexion.query(sql, (err, rows, fields)=>{
+        if(err) throw err
+        else {
+            res.json({status: 'usuario agregado'});
+        }
+    })
+});
 //--------------------
 
 module.exports = router;
