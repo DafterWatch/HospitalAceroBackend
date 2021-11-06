@@ -213,6 +213,21 @@ router.post('/addRegistroMedico',(req, res)=>{
         }
     })
 });
+//get registro lista 1 paciente
+router.post('/getRegistroListaPacienteUno',(req, res)=>{
+    const {doctorId, idusuarios} = req.body
+    let sql = `select r.id as idRegistro, d.id as idDoctor, u.idusuarios, d.doctorName, d.doctorDetails, u.nombreusuario, 
+    r.fechaConsulta, r.datosConsulta, r.instruccionesDoctor, r.recetaMedica from 
+    (registroPaciente r inner join doctores d on r.doctorId = d.id)
+    inner join usuarios u on r.pacienteId = u.idusuarios
+    where d.id = '${doctorId}' and u.idusuarios = '${idusuarios}'`
+    conexion.query(sql, (err, rows, fields)=>{
+        if(err) throw err
+        else {
+            res.json(rows);
+        }
+    })
+});
 //--------------------
 
 module.exports = router;
