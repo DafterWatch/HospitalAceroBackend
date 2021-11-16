@@ -228,6 +228,17 @@ router.post('/getRegistroListaPacienteUno',(req, res)=>{
         }
     })
 });
+//get validar reserva
+router.post('/getValidarReserva',(req, res)=>{
+    const {fecha, hora} = req.body
+    let sql = `select * from citasMedicas where fecha = '${fecha}' and hora = '${hora}'`
+    conexion.query(sql, (err, rows, fields)=>{
+        if(err) throw err
+        else {
+            res.json(rows[0]);
+        }
+    })
+});
 //--------------------
 
 module.exports = router;
