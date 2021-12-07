@@ -239,6 +239,18 @@ router.post('/getValidarReserva',(req, res)=>{
         }
     })
 });
+//get citas paciente
+router.get('/getPerfil/:id',(req, res)=>{
+    const {id} = req.params
+    let sql = `
+    select * from usuarios where idusuarios = ?`
+    conexion.query(sql,[id], (err, rows, fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows[0]);
+        }
+    });
+});
 //--------------------
 
 module.exports = router;
